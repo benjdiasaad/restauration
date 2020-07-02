@@ -1,0 +1,58 @@
+{% extends "myrestaurants/base.html" %}
+{% load static %}
+
+{% block title %}{{page_title}}{% endblock title %}
+    
+{% block header %}
+<div class="ui inverted fixed menu">
+    <div class="header item">
+        <a href="/"><h2><i class="utensils icon"></i>Restaurants</h2></a>
+    </div>
+    <div class="right menu">
+        <div class="ui dropdown item">
+            <i class="list alternate outline icon"></i> Restaurants List
+            <i class="dropdown icon"></i>
+            <div class="menu">
+                {% for restaurant in latest_restaurant_list %}
+                    <li class="item"><a href="{% url 'myrestaurants:restaurant_detail' restaurant.id %}" style="color: black;">{{ restaurant.name }}</a></li>
+                {% empty %}<li class="item">Sorry, no restaurants registered yet.</li>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock header %}
+        
+{% block content %}
+    <div class="ui inverted vertical masthead center aligned segment" id="main">
+        <div class="ui text container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <h2 class="ui inverted image header">
+                        <div class="content"></div>
+                    </h2>
+                    <form class="ui large form" method="post" enctype="multipart/form-data" action="">
+                        {% csrf_token %}
+                        <div class="ui stacked segment">
+                            {% for field in form %}
+                                <div class="field">
+                                    <div class="ui input">
+                                        <div class="ui label">
+                                            <i class="pencil alternate icon"></i> {{ field.label_tag }}
+                                        </div>
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                            <input class="ui fluid large brown submit button" type="submit" value="Submit" />
+                        </div>
+                        {% if form.errors %}
+                            <div class="ui error message" style="display: block;">Your username and password didn't match. Please try again.</div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

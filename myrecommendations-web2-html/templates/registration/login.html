@@ -1,0 +1,71 @@
+{% extends "myrestaurants/base.html" %}
+{% load static %}
+
+{% block title %}Sign in{% endblock title %}
+    
+{% block header %}
+<div class="ui inverted fixed menu">
+    <div class="header item">
+        <a href="/"><h2><i class="utensils icon"></i>Restaurants</h2></a>
+    </div>
+    <div class="right menu">
+        {% if user.is_authenticated %}
+            <a class="item" href="/restaurants/create/"><i class="plus circle icon"></i> Add Restaurant</a>
+            <div class="ui dropdown item">
+                <i class="list alternate outline icon"></i> Restaurants List
+                <i class="dropdown icon"></i>
+                <div class="menu">
+                    {% for restaurant in latest_restaurant_list %}
+                        <li class="item"><a href="{% url 'myrestaurants:restaurant_detail' restaurant.id %}">{{ restaurant.name }}</a></li>
+                    {% empty %}<li class="item">Sorry, no restaurants registered yet.</li>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+        <a class="item" href="accounts/login/"><i class="user circle icon"></i> Sign in</a>
+    </div>
+</div>
+{% endblock header %}
+        
+{% block content %}
+    <div class="ui inverted vertical masthead center aligned segment" id="main">
+        <div class="ui text container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <h2 class="ui inverted image header">
+                        <div class="content">
+                            Log-in to your account
+                        </div>
+                    </h2>
+                    <form class="ui large form" method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="ui stacked segment">
+                            <div class="field">
+                                <div class="ui input">
+                                    <div class="ui label">
+                                        <i class="user icon"></i> {{ form.username.label_tag }}
+                                    </div>
+                                    {{ form.username }}
+                                </div>
+                            </div>
+                            <div class="field">
+                                <div class="ui input">
+                                    <div class="ui label">
+                                        <i class="lock icon"></i> {{ form.password.label_tag }}
+                                    </div>
+                                    {{ form.password }}
+                                </div>
+                            </div>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+
+                            <input class="ui fluid large brown submit button" type="submit" value="Login" />
+                        </div>
+                        {% if form.errors %}
+                            <div class="ui error message" style="display: block;">Your username and password didn't match. Please try again.</div>
+                        {% endif %}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

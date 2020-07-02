@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Playball&display=swap');
+
+body { 
+    font-family: 'Montserrat', sans-serif !important; 
+}
+
+#main {
+    background: url('../img/steak.jpg') fixed;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+#main .main-title { 
+    font-family: 'Playball', cursive !important;
+    font-weight: normal !important;
+    font-size: 7rem !important;
+}
+
+#main .main-subtitle {
+    font-weight: bold !important;
+    font-style: italic !important;
+    font-size: 2rem !important;
+}
+
+#main form .label {
+    display: flex;
+    align-items: center;
+    background-color: antiquewhite;
+}
+
+#about .about_title {
+    font-family: 'Montserrat', sans-serif !important;
+    text-align: center;
+    font-size: 32px;
+    font-weight: 900;
+    width: 280px;
+    letter-spacing: 0.040em;
+    border: 1px solid #2f2e2f; 
+    display: inline-grid;
+}
+
+#about {
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+#about .icon { 
+    margin: 15px 0; 
+    display: grid;
+    justify-content: center;
+}
+
+#about .about-desc {
+    font-size: 20px;
+    line-height: 35px;
+    text-align: justify;
+    box-sizing: border-box;
+    width: 35rem;
+    display: inline-grid;
+}
+
+#about .pic-group { display: flex; }
+
+#about .pic-group img { margin-right: 10px; }

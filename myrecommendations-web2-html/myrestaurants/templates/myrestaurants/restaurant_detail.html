@@ -1,0 +1,92 @@
+{% extends "myrestaurants/base.html" %}
+{% load static %}
+
+{% block title %}{{page_title}}{% endblock title %}
+    
+{% block header %}
+<div class="ui inverted fixed menu">
+    <div class="header item">
+        <a href="/"><h2><i class="utensils icon"></i>Restaurants</h2></a>
+    </div>
+    <div class="right menu">
+        <div class="item">
+         {{ restaurant.name }}
+        {% if user == restaurant.user %}
+        <a   href="{% url 'myrestaurants:restaurant_edit' restaurant.id %}"><i class="info circle icon"></i> edit restaurant</a>
+        {% endif %}
+
+        {% if user %}
+       <a href="{% url 'myrestaurants:dish_create' restaurant.id %}"><i class="plus circle icon"></i>add dish</a>
+        {% endif %}
+    </div>
+</div>
+            
+</div>
+{% endblock header %}
+        
+{% block content %}
+
+    <div class="ui inverted vertical masthead center aligned segment" id="main">
+        <div class="ui text container">
+            <div class="ui middle aligned center aligned grid">
+                <div class="column">
+                    <h2 class="ui inverted image header">
+                        <div class="content">
+                          <div class="jumbotron jumbotron-fluid bg-primary py-6  mt-5">
+                        <div class="container">
+                        <h1 class="text-white"></h1>
+                        <div class="lead text-white">
+                           
+                        </div>
+                         </div>
+                       </div>
+                    </div>
+                    
+                    <form class="ui large form" method="post" enctype="multipart/form-data" action="{% url 'myrestaurants:review_create' restaurant.id %}">
+                        {% csrf_token %}
+                        <div class="ui stacked segment">
+                            {% for field in form %}
+                                <div class="field">
+                                    <div class="ui input">
+                                        <div class="ui label">
+                                            <i class="pencil alternate icon"></i> {{ field.label_tag }}
+                                        </div>
+                                        {{ field }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            {{ restaurant.street }}, {{ restaurant.number }}<br/> 
+                            {{ restaurant.zipcode }} {{ restaurant.city }} 
+                            {{ restaurant.stateOrProvince }} ({{ restaurant.country }})
+                            {% for dish in restaurant.dishes.all %}
+                            <li><a href="{% url 'myrestaurants:dish_detail' restaurant.id dish.id %}">
+                                {{ dish.name }}</a></li>
+                            {% empty %}
+                           <p>Sorry, no dishes for this restaurant yet.</p>
+                            {% endfor %}
+                            <h2>Reviews</h2>
+                            <center>
+                            {% for review in restaurant.restaurantreview_set.all %}
+                            <p>
+                         <p>{{ review.rating }} star{{ review.rating|pluralize }}</p>
+                         <p>{{ review.comment }}</p>
+                        <p>Created by {{ review.user }} on {{ review.date }}</p>
+                         </p>
+                         {% endfor %}
+                          </center>
+                            Message: <textarea name="comment" id="comment" rows="4"></textarea>
+                            <p>Rating:</p>
+                             <p>{% for rate in RATING_CHOICES %}
+                            <input type="radio" name="rating" id="rating{{ forloop.counter }}" value="{{ rate.0 }}" />
+                            <label for="choice{{ forloop.counter }}">{{ rate.1 }} star{{ rate.0|pluralize }}</label>
+                           <br/>{% endfor %}
+                         </p>
+                        
+                        <input class="ui fluid large brown submit button" type="submit" value="Review" />
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
